@@ -1,0 +1,8 @@
+{
+  "funds": {
+    "Fortress": { "role": "Foundation", "status": "Active" },
+    "Hunter": { "role": "Aggressive Growth", "status": "Active" },
+    "Buffer": { "role": "Risk Mitigation", "status": "Active" }
+  },
+  "flow_logic": "la-Slayer $\rightarrow$ la-Fortress (Snowballing)"
+}

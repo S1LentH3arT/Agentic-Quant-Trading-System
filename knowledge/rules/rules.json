@@ -1,0 +1,567 @@
+{
+  "version": "1.0",
+  "updated": "2026-05-22 20:14:00.709502",
+  "rules": [
+    {
+      "id": "R001",
+      "text": "退潮板块反弹不追：板块3日累跌>5%+龙头跌停→次日反弹标记退潮，板块内候选评分−2",
+      "source": "user_experience",
+      "source_date": "2026-05-21",
+      "status": "active",
+      "validation_count": 0,
+      "cross_sectors": [
+        "芯片半导体→可泛化为所有板块"
+      ],
+      "derived_rules": [
+        "R001a",
+        "R001b",
+        "R001c"
+      ]
+    },
+    {
+      "id": "R001a",
+      "text": "回血型反弹识别：反弹幅度/前跌幅<1.0→标记回血，不参与",
+      "source": "derived",
+      "parent": "R001",
+      "status": "pending_validation",
+      "validation_count": 0
+    },
+    {
+      "id": "R001b",
+      "text": "退潮+红盘>3500叠加=虚假繁荣，等至少2个交易日",
+      "source": "derived",
+      "parent": "R001",
+      "status": "pending_validation",
+      "validation_count": 0
+    },
+    {
+      "id": "R001c",
+      "text": "任意板块出现退潮特征→自动搜索历史上最相似的3次退潮→输出平均恢复周期",
+      "source": "derived",
+      "parent": "R001",
+      "status": "pending_validation",
+      "validation_count": 0
+    },
+    {
+      "id": "R002",
+      "text": "补偿性反弹过滤：前日红盘<800家→次日普涨=补偿，不参与。等第三日方向确认",
+      "source": "user_experience",
+      "source_date": "2026-05-21",
+      "status": "active",
+      "validation_count": 0
+    },
+    {
+      "id": "R003",
+      "text": "高低切换信号：主线调整时→低位+有消息催化的板块自动提优先级",
+      "source": "user_experience",
+      "source_date": "2026-05-21",
+      "status": "active",
+      "validation_count": 0
+    },
+    {
+      "id": "R004",
+      "text": "每日三指标：跌停数<5安全/>15警告，红盘>3500过热/<800恐慌，盘面风格主导判断轮动",
+      "source": "user_experience",
+      "source_date": "2026-05-21",
+      "status": "active",
+      "validation_count": 0
+    },
+    {
+      "id": "R005",
+      "text": "板块退潮后至少观望2天再判断方向",
+      "source": "user_experience",
+      "source_date": "2026-05-21",
+      "status": "active",
+      "validation_count": 0
+    },
+    {
+      "id": "R006",
+      "text": "止损=市价单。Rule 2.1触发立即撤限价改市价，离场速度>离场价格",
+      "source": "operational_standard",
+      "source_date": "2026-05-22",
+      "status": "active",
+      "validation_count": 1
+    },
+    {
+      "id": "R007",
+      "text": "买入前必须多周期验证：日线评分+周线趋势+月线位置，三者一致才开仓",
+      "source": "operational_standard",
+      "source_date": "2026-05-22",
+      "status": "active",
+      "validation_count": 0
+    },
+    {
+      "id": "R008",
+      "text": "月度管理：前10天达标→收手锁利；月尾未达标→不追不降标准",
+      "source": "operational_standard",
+      "source_date": "2026-05-22",
+      "status": "active",
+      "validation_count": 0
+    },
+    {
+      "id": "R001_gen_1",
+      "text": "[CPO光模块] CPO光模块退潮后反弹不追：3日累跌>5%+龙头跌停→次日反弹标记退潮",
+      "source": "generalization",
+      "parent": "R001",
+      "source_sector": "芯片半导体",
+      "target_sector": "CPO光模块",
+      "status": "pending_validation",
+      "validation_count": 0,
+      "created": "2026-05-22"
+    },
+    {
+      "id": "R001_gen_2",
+      "text": "[机器人] 机器人退潮后反弹不追：3日累跌>5%+龙头跌停→次日反弹标记退潮",
+      "source": "generalization",
+      "parent": "R001",
+      "source_sector": "芯片半导体",
+      "target_sector": "机器人",
+      "status": "pending_validation",
+      "validation_count": 0,
+      "created": "2026-05-22"
+    },
+    {
+      "id": "R001_gen_3",
+      "text": "[智能驾驶] 智能驾驶退潮后反弹不追：3日累跌>5%+龙头跌停→次日反弹标记退潮",
+      "source": "generalization",
+      "parent": "R001",
+      "source_sector": "芯片半导体",
+      "target_sector": "智能驾驶",
+      "status": "pending_validation",
+      "validation_count": 0,
+      "created": "2026-05-22"
+    },
+    {
+      "id": "R001_gen_4",
+      "text": "[玻璃基板] 玻璃基板退潮后反弹不追：3日累跌>5%+龙头跌停→次日反弹标记退潮",
+      "source": "generalization",
+      "parent": "R001",
+      "source_sector": "芯片半导体",
+      "target_sector": "玻璃基板",
+      "status": "pending_validation",
+      "validation_count": 0,
+      "created": "2026-05-22"
+    },
+    {
+      "id": "R001_gen_5",
+      "text": "[绿电] 绿电退潮后反弹不追：3日累跌>5%+龙头跌停→次日反弹标记退潮",
+      "source": "generalization",
+      "parent": "R001",
+      "source_sector": "芯片半导体",
+      "target_sector": "绿电",
+      "status": "pending_validation",
+      "validation_count": 0,
+      "created": "2026-05-22"
+    },
+    {
+      "id": "R001_gen_6",
+      "text": "[AI通信] AI通信退潮后反弹不追：3日累跌>5%+龙头跌停→次日反弹标记退潮",
+      "source": "generalization",
+      "parent": "R001",
+      "source_sector": "芯片半导体",
+      "target_sector": "AI通信",
+      "status": "pending_validation",
+      "validation_count": 0,
+      "created": "2026-05-22"
+    },
+    {
+      "id": "R001_gen_7",
+      "text": "[电能] 电能退潮后反弹不追：3日累跌>5%+龙头跌停→次日反弹标记退潮",
+      "source": "generalization",
+      "parent": "R001",
+      "source_sector": "芯片半导体",
+      "target_sector": "电能",
+      "status": "pending_validation",
+      "validation_count": 0,
+      "created": "2026-05-22"
+    },
+    {
+      "id": "R001_gen_8",
+      "text": "[算力] 算力退潮后反弹不追：3日累跌>5%+龙头跌停→次日反弹标记退潮",
+      "source": "generalization",
+      "parent": "R001",
+      "source_sector": "芯片半导体",
+      "target_sector": "算力",
+      "status": "pending_validation",
+      "validation_count": 0,
+      "created": "2026-05-22"
+    },
+    {
+      "id": "R001_gen_9",
+      "text": "[液冷] 液冷退潮后反弹不追：3日累跌>5%+龙头跌停→次日反弹标记退潮",
+      "source": "generalization",
+      "parent": "R001",
+      "source_sector": "芯片半导体",
+      "target_sector": "液冷",
+      "status": "pending_validation",
+      "validation_count": 0,
+      "created": "2026-05-22"
+    },
+    {
+      "id": "R001_R002_combo",
+      "text": "组合信号: [退潮板块反弹不追：板块3日累跌>5%+龙头跌停→次日反弹标记退潮，板块内候选评分−2] + [补偿性反弹过滤：前日红盘<800家→次日普涨=补偿，不参与。等第三日方向确认] → 叠加效应，需综合判断",
+      "source": "combination",
+      "parents": [
+        "R001",
+        "R002"
+      ],
+      "trigger_condition": "当 R001 和 R002 同时触发时",
+      "status": "pending_validation",
+      "validation_count": 0,
+      "created": "2026-05-22"
+    },
+    {
+      "id": "R001_R003_combo",
+      "text": "组合信号: [退潮板块反弹不追：板块3日累跌>5%+龙头跌停→次日反弹标记退潮，板块内候选评分−2] + [高低切换信号：主线调整时→低位+有消息催化的板块自动提优先级] → 叠加效应，需综合判断",
+      "source": "combination",
+      "parents": [
+        "R001",
+        "R003"
+      ],
+      "trigger_condition": "当 R001 和 R003 同时触发时",
+      "status": "pending_validation",
+      "validation_count": 0,
+      "created": "2026-05-22"
+    },
+    {
+      "id": "R001_R004_combo",
+      "text": "组合信号: [退潮板块反弹不追：板块3日累跌>5%+龙头跌停→次日反弹标记退潮，板块内候选评分−2] + [每日三指标：跌停数<5安全/>15警告，红盘>3500过热/<800恐慌，盘面风格主导判断轮动] → 叠加效应，需综合判断",
+      "source": "combination",
+      "parents": [
+        "R001",
+        "R004"
+      ],
+      "trigger_condition": "当 R001 和 R004 同时触发时",
+      "status": "pending_validation",
+      "validation_count": 0,
+      "created": "2026-05-22"
+    },
+    {
+      "id": "R001_R005_combo",
+      "text": "组合信号: [退潮板块反弹不追：板块3日累跌>5%+龙头跌停→次日反弹标记退潮，板块内候选评分−2] + [板块退潮后至少观望2天再判断方向] → 叠加效应，需综合判断",
+      "source": "combination",
+      "parents": [
+        "R001",
+        "R005"
+      ],
+      "trigger_condition": "当 R001 和 R005 同时触发时",
+      "status": "pending_validation",
+      "validation_count": 0,
+      "created": "2026-05-22"
+    },
+    {
+      "id": "R001_R006_combo",
+      "text": "组合信号: [退潮板块反弹不追：板块3日累跌>5%+龙头跌停→次日反弹标记退潮，板块内候选评分−2] + [止损=市价单。Rule 2.1触发立即撤限价改市价，离场速度>离场价格] → 叠加效应，需综合判断",
+      "source": "combination",
+      "parents": [
+        "R001",
+        "R006"
+      ],
+      "trigger_condition": "当 R001 和 R006 同时触发时",
+      "status": "pending_validation",
+      "validation_count": 0,
+      "created": "2026-05-22"
+    },
+    {
+      "id": "R001_R007_combo",
+      "text": "组合信号: [退潮板块反弹不追：板块3日累跌>5%+龙头跌停→次日反弹标记退潮，板块内候选评分−2] + [买入前必须多周期验证：日线评分+周线趋势+月线位置，三者一致才开仓] → 叠加效应，需综合判断",
+      "source": "combination",
+      "parents": [
+        "R001",
+        "R007"
+      ],
+      "trigger_condition": "当 R001 和 R007 同时触发时",
+      "status": "pending_validation",
+      "validation_count": 0,
+      "created": "2026-05-22"
+    },
+    {
+      "id": "R001_R008_combo",
+      "text": "组合信号: [退潮板块反弹不追：板块3日累跌>5%+龙头跌停→次日反弹标记退潮，板块内候选评分−2] + [月度管理：前10天达标→收手锁利；月尾未达标→不追不降标准] → 叠加效应，需综合判断",
+      "source": "combination",
+      "parents": [
+        "R001",
+        "R008"
+      ],
+      "trigger_condition": "当 R001 和 R008 同时触发时",
+      "status": "pending_validation",
+      "validation_count": 0,
+      "created": "2026-05-22"
+    },
+    {
+      "id": "R002_R003_combo",
+      "text": "组合信号: [补偿性反弹过滤：前日红盘<800家→次日普涨=补偿，不参与。等第三日方向确认] + [高低切换信号：主线调整时→低位+有消息催化的板块自动提优先级] → 叠加效应，需综合判断",
+      "source": "combination",
+      "parents": [
+        "R002",
+        "R003"
+      ],
+      "trigger_condition": "当 R002 和 R003 同时触发时",
+      "status": "pending_validation",
+      "validation_count": 0,
+      "created": "2026-05-22"
+    },
+    {
+      "id": "R002_R004_combo",
+      "text": "组合信号: [补偿性反弹过滤：前日红盘<800家→次日普涨=补偿，不参与。等第三日方向确认] + [每日三指标：跌停数<5安全/>15警告，红盘>3500过热/<800恐慌，盘面风格主导判断轮动] → 叠加效应，需综合判断",
+      "source": "combination",
+      "parents": [
+        "R002",
+        "R004"
+      ],
+      "trigger_condition": "当 R002 和 R004 同时触发时",
+      "status": "pending_validation",
+      "validation_count": 0,
+      "created": "2026-05-22"
+    },
+    {
+      "id": "R002_R005_combo",
+      "text": "组合信号: [补偿性反弹过滤：前日红盘<800家→次日普涨=补偿，不参与。等第三日方向确认] + [板块退潮后至少观望2天再判断方向] → 叠加效应，需综合判断",
+      "source": "combination",
+      "parents": [
+        "R002",
+        "R005"
+      ],
+      "trigger_condition": "当 R002 和 R005 同时触发时",
+      "status": "pending_validation",
+      "validation_count": 0,
+      "created": "2026-05-22"
+    },
+    {
+      "id": "R002_R006_combo",
+      "text": "组合信号: [补偿性反弹过滤：前日红盘<800家→次日普涨=补偿，不参与。等第三日方向确认] + [止损=市价单。Rule 2.1触发立即撤限价改市价，离场速度>离场价格] → 叠加效应，需综合判断",
+      "source": "combination",
+      "parents": [
+        "R002",
+        "R006"
+      ],
+      "trigger_condition": "当 R002 和 R006 同时触发时",
+      "status": "pending_validation",
+      "validation_count": 0,
+      "created": "2026-05-22"
+    },
+    {
+      "id": "R002_R007_combo",
+      "text": "组合信号: [补偿性反弹过滤：前日红盘<800家→次日普涨=补偿，不参与。等第三日方向确认] + [买入前必须多周期验证：日线评分+周线趋势+月线位置，三者一致才开仓] → 叠加效应，需综合判断",
+      "source": "combination",
+      "parents": [
+        "R002",
+        "R007"
+      ],
+      "trigger_condition": "当 R002 和 R007 同时触发时",
+      "status": "pending_validation",
+      "validation_count": 0,
+      "created": "2026-05-22"
+    },
+    {
+      "id": "R002_R008_combo",
+      "text": "组合信号: [补偿性反弹过滤：前日红盘<800家→次日普涨=补偿，不参与。等第三日方向确认] + [月度管理：前10天达标→收手锁利；月尾未达标→不追不降标准] → 叠加效应，需综合判断",
+      "source": "combination",
+      "parents": [
+        "R002",
+        "R008"
+      ],
+      "trigger_condition": "当 R002 和 R008 同时触发时",
+      "status": "pending_validation",
+      "validation_count": 0,
+      "created": "2026-05-22"
+    },
+    {
+      "id": "R003_R004_combo",
+      "text": "组合信号: [高低切换信号：主线调整时→低位+有消息催化的板块自动提优先级] + [每日三指标：跌停数<5安全/>15警告，红盘>3500过热/<800恐慌，盘面风格主导判断轮动] → 叠加效应，需综合判断",
+      "source": "combination",
+      "parents": [
+        "R003",
+        "R004"
+      ],
+      "trigger_condition": "当 R003 和 R004 同时触发时",
+      "status": "pending_validation",
+      "validation_count": 0,
+      "created": "2026-05-22"
+    },
+    {
+      "id": "R003_R005_combo",
+      "text": "组合信号: [高低切换信号：主线调整时→低位+有消息催化的板块自动提优先级] + [板块退潮后至少观望2天再判断方向] → 叠加效应，需综合判断",
+      "source": "combination",
+      "parents": [
+        "R003",
+        "R005"
+      ],
+      "trigger_condition": "当 R003 和 R005 同时触发时",
+      "status": "pending_validation",
+      "validation_count": 0,
+      "created": "2026-05-22"
+    },
+    {
+      "id": "R003_R006_combo",
+      "text": "组合信号: [高低切换信号：主线调整时→低位+有消息催化的板块自动提优先级] + [止损=市价单。Rule 2.1触发立即撤限价改市价，离场速度>离场价格] → 叠加效应，需综合判断",
+      "source": "combination",
+      "parents": [
+        "R003",
+        "R006"
+      ],
+      "trigger_condition": "当 R003 和 R006 同时触发时",
+      "status": "pending_validation",
+      "validation_count": 0,
+      "created": "2026-05-22"
+    },
+    {
+      "id": "R003_R007_combo",
+      "text": "组合信号: [高低切换信号：主线调整时→低位+有消息催化的板块自动提优先级] + [买入前必须多周期验证：日线评分+周线趋势+月线位置，三者一致才开仓] → 叠加效应，需综合判断",
+      "source": "combination",
+      "parents": [
+        "R003",
+        "R007"
+      ],
+      "trigger_condition": "当 R003 和 R007 同时触发时",
+      "status": "pending_validation",
+      "validation_count": 0,
+      "created": "2026-05-22"
+    },
+    {
+      "id": "R003_R008_combo",
+      "text": "组合信号: [高低切换信号：主线调整时→低位+有消息催化的板块自动提优先级] + [月度管理：前10天达标→收手锁利；月尾未达标→不追不降标准] → 叠加效应，需综合判断",
+      "source": "combination",
+      "parents": [
+        "R003",
+        "R008"
+      ],
+      "trigger_condition": "当 R003 和 R008 同时触发时",
+      "status": "pending_validation",
+      "validation_count": 0,
+      "created": "2026-05-22"
+    },
+    {
+      "id": "R004_R005_combo",
+      "text": "组合信号: [每日三指标：跌停数<5安全/>15警告，红盘>3500过热/<800恐慌，盘面风格主导判断轮动] + [板块退潮后至少观望2天再判断方向] → 叠加效应，需综合判断",
+      "source": "combination",
+      "parents": [
+        "R004",
+        "R005"
+      ],
+      "trigger_condition": "当 R004 和 R005 同时触发时",
+      "status": "pending_validation",
+      "validation_count": 0,
+      "created": "2026-05-22"
+    },
+    {
+      "id": "R004_R006_combo",
+      "text": "组合信号: [每日三指标：跌停数<5安全/>15警告，红盘>3500过热/<800恐慌，盘面风格主导判断轮动] + [止损=市价单。Rule 2.1触发立即撤限价改市价，离场速度>离场价格] → 叠加效应，需综合判断",
+      "source": "combination",
+      "parents": [
+        "R004",
+        "R006"
+      ],
+      "trigger_condition": "当 R004 和 R006 同时触发时",
+      "status": "pending_validation",
+      "validation_count": 0,
+      "created": "2026-05-22"
+    },
+    {
+      "id": "R004_R007_combo",
+      "text": "组合信号: [每日三指标：跌停数<5安全/>15警告，红盘>3500过热/<800恐慌，盘面风格主导判断轮动] + [买入前必须多周期验证：日线评分+周线趋势+月线位置，三者一致才开仓] → 叠加效应，需综合判断",
+      "source": "combination",
+      "parents": [
+        "R004",
+        "R007"
+      ],
+      "trigger_condition": "当 R004 和 R007 同时触发时",
+      "status": "pending_validation",
+      "validation_count": 0,
+      "created": "2026-05-22"
+    },
+    {
+      "id": "R004_R008_combo",
+      "text": "组合信号: [每日三指标：跌停数<5安全/>15警告，红盘>3500过热/<800恐慌，盘面风格主导判断轮动] + [月度管理：前10天达标→收手锁利；月尾未达标→不追不降标准] → 叠加效应，需综合判断",
+      "source": "combination",
+      "parents": [
+        "R004",
+        "R008"
+      ],
+      "trigger_condition": "当 R004 和 R008 同时触发时",
+      "status": "pending_validation",
+      "validation_count": 0,
+      "created": "2026-05-22"
+    },
+    {
+      "id": "R005_R006_combo",
+      "text": "组合信号: [板块退潮后至少观望2天再判断方向] + [止损=市价单。Rule 2.1触发立即撤限价改市价，离场速度>离场价格] → 叠加效应，需综合判断",
+      "source": "combination",
+      "parents": [
+        "R005",
+        "R006"
+      ],
+      "trigger_condition": "当 R005 和 R006 同时触发时",
+      "status": "pending_validation",
+      "validation_count": 0,
+      "created": "2026-05-22"
+    },
+    {
+      "id": "R005_R007_combo",
+      "text": "组合信号: [板块退潮后至少观望2天再判断方向] + [买入前必须多周期验证：日线评分+周线趋势+月线位置，三者一致才开仓] → 叠加效应，需综合判断",
+      "source": "combination",
+      "parents": [
+        "R005",
+        "R007"
+      ],
+      "trigger_condition": "当 R005 和 R007 同时触发时",
+      "status": "pending_validation",
+      "validation_count": 0,
+      "created": "2026-05-22"
+    },
+    {
+      "id": "R005_R008_combo",
+      "text": "组合信号: [板块退潮后至少观望2天再判断方向] + [月度管理：前10天达标→收手锁利；月尾未达标→不追不降标准] → 叠加效应，需综合判断",
+      "source": "combination",
+      "parents": [
+        "R005",
+        "R008"
+      ],
+      "trigger_condition": "当 R005 和 R008 同时触发时",
+      "status": "pending_validation",
+      "validation_count": 0,
+      "created": "2026-05-22"
+    },
+    {
+      "id": "R006_R007_combo",
+      "text": "组合信号: [止损=市价单。Rule 2.1触发立即撤限价改市价，离场速度>离场价格] + [买入前必须多周期验证：日线评分+周线趋势+月线位置，三者一致才开仓] → 叠加效应，需综合判断",
+      "source": "combination",
+      "parents": [
+        "R006",
+        "R007"
+      ],
+      "trigger_condition": "当 R006 和 R007 同时触发时",
+      "status": "pending_validation",
+      "validation_count": 0,
+      "created": "2026-05-22"
+    },
+    {
+      "id": "R006_R008_combo",
+      "text": "组合信号: [止损=市价单。Rule 2.1触发立即撤限价改市价，离场速度>离场价格] + [月度管理：前10天达标→收手锁利；月尾未达标→不追不降标准] → 叠加效应，需综合判断",
+      "source": "combination",
+      "parents": [
+        "R006",
+        "R008"
+      ],
+      "trigger_condition": "当 R006 和 R008 同时触发时",
+      "status": "pending_validation",
+      "validation_count": 0,
+      "created": "2026-05-22"
+    },
+    {
+      "id": "R007_R008_combo",
+      "text": "组合信号: [买入前必须多周期验证：日线评分+周线趋势+月线位置，三者一致才开仓] + [月度管理：前10天达标→收手锁利；月尾未达标→不追不降标准] → 叠加效应，需综合判断",
+      "source": "combination",
+      "parents": [
+        "R007",
+        "R008"
+      ],
+      "trigger_condition": "当 R007 和 R008 同时触发时",
+      "status": "pending_validation",
+      "validation_count": 0,
+      "created": "2026-05-22"
+    }
+  ],
+  "total_active": 8,
+  "total_pending": 40
+}

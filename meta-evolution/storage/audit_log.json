@@ -1,0 +1,15 @@
+[
+  {
+    "event": "PROPOSAL_APPROVED",
+    "proposal_id": "PROP-20260509213730",
+    "approver": "User",
+    "timestamp": "2026-05-09T21:50:45.034449"
+  },
+  {
+    "event": "EVOLUTION_VERIFIED",
+    "proposal_id": "PROP-20260509213730",
+    "success": true,
+    "evidence": "Verified: /usr/bin/failure-cases/ is now ignored. Error count for this pattern dropped to 0 in the latest scan.",
+    "timestamp": "2026-05-09T21:55:22.393920"
+  }
+]

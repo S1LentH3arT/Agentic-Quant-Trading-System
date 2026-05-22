@@ -1,0 +1,23 @@
+{
+  "timestamp": "2026-05-22 08:52:33.726605",
+  "capital": {
+    "total_capital": 3800,
+    "deployed": 0,
+    "cash": 3800,
+    "sellable_cash": 0,
+    "effective_cash": 3800,
+    "days_idle": 1,
+    "idle_too_long": true,
+    "forced_rotation": false
+  },
+  "extreme": {
+    "extreme": false,
+    "reason": null,
+    "action": null
+  },
+  "candidates_top5": [],
+  "deploy": {
+    "action": "HOLD_CASH",
+    "reason": "无评分>=5的候选"
+  }
+}

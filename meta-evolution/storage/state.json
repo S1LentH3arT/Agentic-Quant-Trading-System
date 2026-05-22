@@ -1,0 +1,62 @@
+{
+  "observations": [
+    {
+      "pattern": "[TIMESTAMP] ERROR: Path scan failed: /usr/bin/failure-cases/[TEST_ID]",
+      "count": 8,
+      "first_seen": "2026-05-09T21:37:15.923583",
+      "last_seen": "2026-05-09T21:37:15.923583",
+      "status": "promoted"
+    },
+    {
+      "type": "repeated_violation",
+      "pattern": "规则 2.1 重复违规 2 次",
+      "count": 4,
+      "first_seen": "2026-05-22 20:13:41.664283",
+      "last_seen": "2026-05-22 20:14:00.705161",
+      "status": "observing",
+      "detail": {
+        "rule": "2.1",
+        "violation_count": 2
+      }
+    },
+    {
+      "type": "sector_blind_spot",
+      "pattern": "品种池缺失板块: ['半导体', '新能源', '医药']",
+      "count": 6,
+      "first_seen": "2026-05-22 20:13:41.665208",
+      "last_seen": "2026-05-22 20:14:00.706314",
+      "status": "observing",
+      "detail": {
+        "missing_sectors": [
+          "半导体",
+          "新能源",
+          "医药"
+        ],
+        "pool_total": 51
+      }
+    }
+  ],
+  "agenda": [
+    {
+      "id": "PROP-20260509213730",
+      "source_pattern": "[TIMESTAMP] ERROR: Path scan failed: /usr/bin/failure-cases/[TEST_ID]",
+      "evidence": {
+        "occurrences": 8,
+        "first_seen": "2026-05-09T21:37:15.923583",
+        "last_seen": "2026-05-09T21:37:15.923583"
+      },
+      "hypothesis": "感知层误触：将测试用的失败案例目录 /usr/bin/failure-cases/ 判定为系统错误",
+      "proposed_fix": "在感知层过滤器中将 /usr/bin/failure-cases/ 加入排除名单",
+      "expected_gain": "Reduction of systemic noise and improved perception accuracy",
+      "risk_level": "Low",
+      "status": "verified",
+      "created_at": "2026-05-09T21:37:30.751410",
+      "approved_by": "User",
+      "approved_at": "2026-05-09T21:50:45.034449",
+      "verification_date": "2026-05-09T21:55:22.393920",
+      "verification_evidence": "Verified: /usr/bin/failure-cases/ is now ignored. Error count for this pattern dropped to 0 in the latest scan."
+    }
+  ],
+  "last_heartbeat": null,
+  "system_status": "initializing"
+}
