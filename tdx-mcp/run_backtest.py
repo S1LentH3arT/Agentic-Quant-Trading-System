@@ -1,5 +1,5 @@
-import sys
-sys.path.insert(0, 'F:/working-project/tdx-mcp')
+import sys, os
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.stdout.reconfigure(encoding='utf-8')
 
 from backtest_engine import run_market_backtest, BacktestEngine

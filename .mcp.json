@@ -1,8 +1,8 @@
 {
   "mcpServers": {
     "tdx": {
-      "command": "C:/Users/Administrator/AppData/Local/Programs/Python/Python314/python.exe",
-      "args": ["F:/working-project/tdx-mcp/server.py"]
+      "command": "D:/Agentic-Quant-Trading-System/Agentic-Quant-Trading-System/.venv/Scripts/python.exe",
+      "args": ["D:/Agentic-Quant-Trading-System/Agentic-Quant-Trading-System/tdx-mcp/server.py"]
     }
   }
 }

@@ -5,7 +5,8 @@
 """
 
 import sys, time, json, os
-sys.path.insert(0, 'F:/working-project/tdx-mcp')
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from config import get_path, ensure_dir
 from mootdx.quotes import StdQuotes
 
 # ============================================================
@@ -36,7 +37,7 @@ def send_notification(title: str, message: str):
 
 def log_alert(alert: dict, price: float):
     """记录触发"""
-    log_file = "F:/working-project/tdx-mcp/alerts/alert_log.txt"
+    log_file = get_path("tdx-mcp", "alerts", "alert_log.txt")
     os.makedirs(os.path.dirname(log_file), exist_ok=True)
     line = f"{time.strftime('%Y-%m-%d %H:%M:%S')} | {alert['symbol']} {alert['name']} | {alert['condition']} {alert['price']} | actual={price} | {alert['msg']}\n"
     with open(log_file, 'a', encoding='utf-8') as f:

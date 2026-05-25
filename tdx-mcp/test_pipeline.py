@@ -1,5 +1,6 @@
-import sys
-sys.path.insert(0, 'F:/working-project/tdx-mcp')
+import sys, os
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from config import get_path, ensure_dir
 sys.stdout.reconfigure(encoding='utf-8')
 
 from indicator_engine import load_kline, calc_all_indicators, get_summary, score_stock
@@ -25,6 +26,6 @@ for d in sc['details']:
     print(f'  - {d}')
 
 print('\nRendering chart...')
-path = render_chart('SSE:600863', df, 'F:/working-project/tdx-mcp/charts/600863_test.png')
+path = render_chart('SSE:600863', df, get_path('tdx-mcp', 'charts', '600863_test.png'))
 print(f'Chart saved: {path}')
 print('Pipeline OK.')

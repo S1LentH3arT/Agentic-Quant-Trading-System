@@ -1,5 +1,8 @@
 import json
 import os
+import sys
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+from config import get_path
 from datetime import datetime
 
 class MetaGovernor:
@@ -7,7 +10,11 @@ class MetaGovernor:
     The legal and safety layer of the evolution system.
     Ensures that no 'evolution' happens without approval, and all changes are audited.
     """
-    def __init__(self, state_path="F:/working-project/meta-evolution/storage/state.json", audit_path="F:/working-project/meta-evolution/storage/audit_log.json"):
+    def __init__(self, state_path=None, audit_path=None):
+        if state_path is None:
+            state_path = get_path("meta-evolution", "storage", "state.json")
+        if audit_path is None:
+            audit_path = get_path("meta-evolution", "storage", "audit_log.json")
         self.state_path = state_path
         self.audit_path = audit_path
         self.state = self._load_state()

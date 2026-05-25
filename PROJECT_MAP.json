@@ -5,20 +5,21 @@
     "role": "Quant Strategist & Orchestrator (Enhanced with Info-Channel Monitoring: 财联社, 金十数据, X)"
   },
   "data_indices": {
-    "evolution_state": "F:/working-project/meta-evolution/storage/state.json",
-    "audit_trail": "F:/working-project/meta-evolution/storage/audit_log.json",
-    "soul_principles": "F:/working-project/soul.md",
-    "runtime_logs": "F:/working-project/meta-evolution/storage/mock_runtime.log",
-    "quant_knowledge_layer": "F:/working-project/quant_intelligence/knowledge_layer/la-SOP.md",
-    "quant_capital_flow": "F:/working-project/quant_intelligence/capital_flow/flow_log.json",
-    "quant_audit": "F:/working-project/quant_intelligence/audit_logs/surgical_scan.json"
+    "evolution_state": "meta-evolution/storage/state.json",
+    "audit_trail": "meta-evolution/storage/audit_log.json",
+    "soul_principles": "soul.md",
+    "runtime_logs": "meta-evolution/storage/mock_runtime.log",
+    "quant_knowledge_layer": "quant_intelligence/knowledge_layer/la-SOP.md",
+    "quant_capital_flow": "quant_intelligence/capital_flow/flow_log.json",
+    "quant_audit": "quant_intelligence/audit_logs/surgical_scan.json"
   },
   "architecture_layers": {
-    "rules": "F:/working-project/rules/",
-    "skills": "F:/working-project/skills/",
-    "agents": "F:/working-project/agents/",
-    "hooks": "F:/working-project/hooks/",
-    "quant_intelligence": "F:/working-project/quant_intelligence/"
+    "rules": "knowledge/rules/",
+    "skills": "skills/",
+    "agents": "agents/",
+    "hooks": "hooks/",
+    "quant_intelligence": "quant_intelligence/"
   },
-  "current_epoch": "SOP v1.2 (Surgical Mode)"
+  "current_epoch": "SOP v1.2 (Surgical Mode)",
+  "note": "All paths relative to PROJECT_ROOT. Use config.get_path() to resolve."
 }

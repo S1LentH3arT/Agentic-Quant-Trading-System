@@ -1,5 +1,8 @@
 import json
 import os
+import sys
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+from config import get_path
 from datetime import datetime
 
 class MetaAnalyst:
@@ -7,7 +10,9 @@ class MetaAnalyst:
     The cognitive engine that transforms observations into actionable evolution proposals.
     It evaluates 'observation maturity' and drafts structured improvement plans.
     """
-    def __init__(self, state_path="F:/working-project/meta-evolution/storage/state.json"):
+    def __init__(self, state_path=None):
+        if state_path is None:
+            state_path = get_path("meta-evolution", "storage", "state.json")
         self.state_path = state_path
         self.state = self._load_state()
         # Threshold: How many times must a pattern be seen before it's considered a "trend" worth proposing?

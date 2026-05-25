@@ -5,7 +5,8 @@
 """
 
 import sys, os, json
-sys.path.insert(0, 'F:/working-project/tdx-mcp')
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from config import get_path, ensure_dir
 import numpy as np
 from indicator_engine import load_kline, calc_all_indicators, get_summary, score_stock
 from datetime import datetime, date
@@ -18,7 +19,7 @@ def _get_discovery_symbols() -> list[str]:
     import json
     symbols = []
     for fname in ["discovery_pool.json"]:
-        fpath = f"F:/working-project/tdx-mcp/discoveries/{fname}"
+        fpath = os.path.join(get_path("tdx-mcp", "discoveries"), fname)
         if os.path.exists(fpath):
             with open(fpath, encoding='utf-8') as f:
                 data = json.load(f)
@@ -26,7 +27,7 @@ def _get_discovery_symbols() -> list[str]:
                 symbols.extend(list(data.keys()))
     # 也读取今日狙击结果
     today = date.today().isoformat()
-    sniper_file = f"F:/working-project/tdx-mcp/discoveries/sniper_{today}.json"
+    sniper_file = get_path("tdx-mcp", "discoveries", f"sniper_{today}.json")
     if os.path.exists(sniper_file):
         with open(sniper_file, encoding='utf-8') as f:
             data = json.load(f)
@@ -184,9 +185,10 @@ def generate_recommendations(scan_results: dict) -> dict:
 # ============================================================
 # 持久化 — 保存扫描结果, 追踪趋势变化
 # ============================================================
-def save_scan(scan_results: dict, recs: dict, save_dir: str = "F:/working-project/tdx-mcp/scans"):
+def save_scan(scan_results: dict, recs: dict, save_dir: str = None):
     """保存扫描结果, 支持历史对比"""
-    os.makedirs(save_dir, exist_ok=True)
+    if save_dir is None:
+        save_dir = ensure_dir("tdx-mcp", "scans")
     today = date.today().isoformat()
 
     record = {
@@ -210,7 +212,7 @@ def save_scan(scan_results: dict, recs: dict, save_dir: str = "F:/working-projec
 
 def load_history(days: int = 5) -> list:
     """加载最近N天的扫描记录"""
-    save_dir = "F:/working-project/tdx-mcp/scans"
+    save_dir = get_path("tdx-mcp", "scans")
     records = []
     if not os.path.exists(save_dir):
         return records
@@ -246,11 +248,11 @@ def trend_diff(today: dict, yesterday: dict) -> dict:
 def update_objective_metrics() -> dict:
     """每日更新7维度客观指标（从持久化交易记录中计算）"""
     import json, os
-    metrics_file = "F:/working-project/tdx-mcp/scans/objective_metrics.json"
+    metrics_file = get_path("tdx-mcp", "scans", "objective_metrics.json")
 
     # 加载历史交易记录
     all_trades = []
-    scan_dir = "F:/working-project/tdx-mcp/scans"
+    scan_dir = get_path("tdx-mcp", "scans")
     if os.path.exists(scan_dir):
         for f in sorted(os.listdir(scan_dir)):
             if f.endswith('.json') and not f.startswith('week'):

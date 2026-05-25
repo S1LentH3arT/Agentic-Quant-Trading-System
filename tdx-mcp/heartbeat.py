@@ -4,7 +4,8 @@
 """
 
 import sys, time, json, os, ctypes
-sys.path.insert(0, 'F:/working-project/tdx-mcp')
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from config import get_path, ensure_dir
 from mootdx.quotes import StdQuotes
 from datetime import datetime
 
@@ -31,7 +32,7 @@ POSITIONS = {
 # 盘中心跳时间点 (CST)
 HEARTBEAT_TIMES = ["09:25", "09:45", "10:15", "10:45", "11:15", "13:05", "13:45", "14:15", "14:45", "14:55"]
 
-ALERT_LOG = "F:/working-project/tdx-mcp/alerts/heartbeat_log.txt"
+ALERT_LOG = get_path("tdx-mcp", "alerts", "heartbeat_log.txt")
 
 MB_TOPMOST = 0x40000
 MB_SETFOREGROUND = 0x10000

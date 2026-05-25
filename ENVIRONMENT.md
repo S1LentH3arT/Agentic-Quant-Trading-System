@@ -3,21 +3,17 @@
 This document serves as the absolute truth for the Agent's physical location and access rights to prevent "path not found" or "physical obstruction" errors.
 
 ## Physical Location
-- **Root Directory**: `F:\working-project`
-- **OS**: Windows 10 Pro
+- **Root Directory**: `D:\Agentic-Quant-Trading-System\Agentic-Quant-Trading-System` (auto-detected via `config.py`)
+- **OS**: Windows 11 Home China
 - **Shell**: Bash (via Git Bash / Windows Terminal)
 
 ## Critical Paths
-- **Meta Evolution System**: `F:\working-project\meta-evolution\`
-- **Configuration**: `F:\working-project\.claude\`
-- **Soul & Architecture**: `F:\working-project\soul.md`
-- **Core Architecture Layers**: 
-  - Rules: `F:\working-project\rules\`
-  - Skills: `F:\working-project\skills\`
-  - Agents: `F:\working-project\agents\`
-  - Hooks: `F:\working-project\hooks\`
+All paths managed centrally via `config.py`. Use `from config import get_path` to resolve.
+- **Meta Evolution System**: `{PROJECT_ROOT}/meta-evolution/`
+- **Configuration**: `{PROJECT_ROOT}/.claude/`
+- **Core Trading Engine**: `{PROJECT_ROOT}/tdx-mcp/`
 
 ## Access Protocol
-1. **Path Format**: Always use absolute paths starting with `F:/working-project/` (forward slashes are preferred for tool calls).
+1. **Path Format**: Always use `config.get_path("subdir", "file")` — never hardcode absolute paths.
 2. **Verification**: If a file is reported missing, execute `ls -R` on the parent directory before reporting failure.
-3. **Permission**: The Agent has full read/write access to the `F:\working-project` tree.
+3. **Project Root**: Set `QUANT_PROJECT_ROOT` env var to override auto-detection.

@@ -4,17 +4,16 @@
 easytrader → 同花顺xiadan.exe → 中金财富
 系统生成指令 → 弹窗确认 → 自动下单 → 实时同步持仓
 """
-import json
-import os
 import sys
+import os
 import ctypes
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from config import get_path, ensure_dir
 from datetime import datetime, date
 from dataclasses import dataclass, asdict
 from typing import Optional
 
-sys.path.insert(0, 'F:/working-project/tdx-mcp')
-
-STATE_DIR = "F:/working-project/tdx-mcp/state"
+STATE_DIR = ensure_dir("tdx-mcp", "state")
 ORDER_FILE = f"{STATE_DIR}/pending_order.json"
 os.makedirs(STATE_DIR, exist_ok=True)
 

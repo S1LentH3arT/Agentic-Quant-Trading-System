@@ -1,5 +1,5 @@
-import sys
-sys.path.insert(0, 'F:/working-project/tdx-mcp')
+import sys, os
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.stdout.reconfigure(encoding='utf-8')
 from indicator_engine import load_kline, calc_all_indicators, get_summary, score_stock
 from mootdx.quotes import StdQuotes

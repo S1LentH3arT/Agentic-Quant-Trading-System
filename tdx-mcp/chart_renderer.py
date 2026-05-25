@@ -3,6 +3,7 @@
 综合决策王 图表渲染 — 绕过 TV 限制, 用 TDX 数据直接出图
 """
 
+import sys
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
@@ -13,6 +14,8 @@ import pandas as pd
 import numpy as np
 import os
 from datetime import datetime
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from config import get_path, ensure_dir
 from indicator_engine import calc_all_indicators, get_summary
 
 # 修复中文显示
@@ -92,7 +95,7 @@ def render_chart(symbol: str, df: pd.DataFrame, save_path: str = None) -> str:
     )
 
     if save_path is None:
-        save_path = f"F:/working-project/tdx-mcp/charts/{symbol}_{datetime.now().strftime('%Y%m%d_%H%M')}.png"
+        save_path = os.path.join(ensure_dir("tdx-mcp", "charts"), f"{symbol}_{datetime.now().strftime('%Y%m%d_%H%M')}.png")
     os.makedirs(os.path.dirname(save_path), exist_ok=True)
     fig.savefig(save_path, dpi=130, bbox_inches='tight', facecolor='#1a1a2e')
     plt.close(fig)
@@ -143,7 +146,7 @@ def render_sector_grid(symbols: list[str], sector_name: str, save_path: str = No
                 tbl[(i+1, j)].set_facecolor('#1a3a1a')
 
     if save_path is None:
-        save_path = f"F:/working-project/tdx-mcp/charts/sector_{sector_name}_{datetime.now().strftime('%Y%m%d_%H%M')}.png"
+        save_path = os.path.join(ensure_dir("tdx-mcp", "charts"), f"sector_{sector_name}_{datetime.now().strftime('%Y%m%d_%H%M')}.png")
     os.makedirs(os.path.dirname(save_path), exist_ok=True)
     fig.savefig(save_path, dpi=130, bbox_inches='tight', facecolor='#1a1a2e')
     plt.close(fig)

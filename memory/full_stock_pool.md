@@ -45,7 +45,7 @@
 
 ## 发现池（43只）
 
-见 `F:/working-project/tdx-mcp/discoveries/discovery_pool.json`
+见 `tdx-mcp/discoveries/discovery_pool.json`（相对项目根目录）
 
 ## 漏判待入库
 

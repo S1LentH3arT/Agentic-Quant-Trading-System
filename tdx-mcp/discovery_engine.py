@@ -5,7 +5,8 @@
 """
 
 import sys, os, json
-sys.path.insert(0, 'F:/working-project/tdx-mcp')
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from config import get_path, ensure_dir
 from mootdx.quotes import StdQuotes
 from indicator_engine import load_kline, calc_all_indicators, get_summary, score_stock
 from datetime import datetime, date
@@ -154,8 +155,7 @@ def filter_existing(discoveries: list[dict], existing_pool: set) -> list[dict]:
 def save_discoveries(discoveries: list[dict], top_n: int = 20):
     """保存发现结果, 更新品种池"""
     today = date.today().isoformat()
-    save_dir = "F:/working-project/tdx-mcp/discoveries"
-    os.makedirs(save_dir, exist_ok=True)
+    save_dir = ensure_dir("tdx-mcp", "discoveries")
 
     # 按评分排序
     discoveries.sort(key=lambda d: d['score'], reverse=True)
@@ -171,7 +171,7 @@ def save_discoveries(discoveries: list[dict], top_n: int = 20):
         json.dump(record, f, ensure_ascii=False, indent=2)
 
     # 更新候选池 (追加到品种池的发现层)
-    pool_file = "F:/working-project/tdx-mcp/discoveries/discovery_pool.json"
+    pool_file = get_path("tdx-mcp", "discoveries", "discovery_pool.json")
     existing_pool = {}
     if os.path.exists(pool_file):
         with open(pool_file, encoding='utf-8') as f:

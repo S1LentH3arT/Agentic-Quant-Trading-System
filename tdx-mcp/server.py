@@ -6,8 +6,13 @@
 
 import json
 import sys
+import os
 import asyncio
 from typing import Any
+
+# ── 项目路径 ──
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from config import get_path, ensure_dir
 
 # ============================================================
 # 数据层 — 尝试加载 mootdx
@@ -15,7 +20,6 @@ from typing import Any
 try:
     from mootdx.quotes import StdQuotes
     TDX_READY = True
-    # 直连速度最快的服务器(已验证连通)
     client = StdQuotes(host='218.6.170.47', port=7709, timeout=8)
 except Exception:
     try:
@@ -38,7 +42,6 @@ def _tdx_quote(symbols: list[str]) -> dict:
         if data is None or (hasattr(data, 'empty') and data.empty):
             return {"error": "无数据"}
         result = []
-        # mootdx returns pandas DataFrame
         if hasattr(data, 'iterrows'):
             for _, row in data.iterrows():
                 result.append({
@@ -54,17 +57,17 @@ def _tdx_quote(symbols: list[str]) -> dict:
         else:
             for row in (data or []):
                 result.append({
-                "code": row.get("code", ""),
-                "name": row.get("name", ""),
-                "price": row.get("price", 0),
-                "open": row.get("open", 0),
-                "high": row.get("high", 0),
-                "low": row.get("low", 0),
-                "volume": row.get("volume", 0),
-                "amount": row.get("amount", 0),
-                "change_pct": round(row.get("change_pct", 0) or 0, 2),
-                "pe": row.get("pe", 0),
-            })
+                    "code": row.get("code", ""),
+                    "name": row.get("name", ""),
+                    "price": row.get("price", 0),
+                    "open": row.get("open", 0),
+                    "high": row.get("high", 0),
+                    "low": row.get("low", 0),
+                    "volume": row.get("volume", 0),
+                    "amount": row.get("amount", 0),
+                    "change_pct": round(row.get("change_pct", 0) or 0, 2),
+                    "pe": row.get("pe", 0),
+                })
         return {"quotes": result}
     except Exception as e:
         return {"error": str(e)}
@@ -80,19 +83,31 @@ def _tdx_kline(symbol: str, period: str = "day", count: int = 60) -> dict:
         if data is None or (hasattr(data, 'empty') and data.empty):
             return {"error": "无数据"}
         bars = []
-        rows = data.iterrows() if hasattr(data, 'iterrows') else data
-        for row in (rows if not hasattr(data, 'iterrows') else [(None, r) for _, r in data.iterrows()]):
-            r = row[1] if isinstance(row, tuple) else row
-                "date": str(row.get("date", "")),
-                "open": float(row.get("open", 0)),
-                "high": float(row.get("high", 0)),
-                "low": float(row.get("low", 0)),
-                "close": float(row.get("close", 0)),
-                "volume": float(row.get("volume", 0)),
-            })
-        last = bars[-1] if bars else {}
-        prev = bars[-2] if len(bars) > 1 else {}
-        chg = (last["close"] - prev["close"]) / prev["close"] * 100 if prev else 0
+        if hasattr(data, 'iterrows'):
+            for _, r in data.iterrows():
+                bars.append({
+                    "date": str(r.get("date", "")),
+                    "open": float(r.get("open", 0) or 0),
+                    "high": float(r.get("high", 0) or 0),
+                    "low": float(r.get("low", 0) or 0),
+                    "close": float(r.get("close", 0) or 0),
+                    "volume": float(r.get("volume", 0) or 0),
+                })
+        else:
+            for r in (data or []):
+                bars.append({
+                    "date": str(r.get("date", "")),
+                    "open": float(r.get("open", 0) or 0),
+                    "high": float(r.get("high", 0) or 0),
+                    "low": float(r.get("low", 0) or 0),
+                    "close": float(r.get("close", 0) or 0),
+                    "volume": float(r.get("volume", 0) or 0),
+                })
+        if not bars:
+            return {"error": "无数据"}
+        last = bars[-1]
+        prev = bars[-2] if len(bars) > 1 else last
+        chg = (last["close"] - prev["close"]) / prev["close"] * 100 if prev["close"] else 0
         hi = max(b["high"] for b in bars[-count:])
         lo = min(b["low"] for b in bars[-count:])
         avg_vol = sum(b["volume"] for b in bars[-20:]) / min(20, len(bars))
@@ -126,7 +141,7 @@ def _tdx_search(keyword: str) -> dict:
     if not TDX_READY:
         return {"error": "mootdx 未安装或连接失败"}
     try:
-        all_stocks = client.stocks(market=1)  # 深沪A股
+        all_stocks = client.stocks(market=1)
         matches = [s for s in (all_stocks or []) if keyword in str(s.get("code","")) or keyword in str(s.get("name",""))]
         return {"matches": matches[:20]}
     except Exception as e:
@@ -139,7 +154,6 @@ def _clean(symbol: str) -> str:
 def _tdx_indicator(symbol: str, count: int = 120) -> dict:
     """综合决策王全部指标"""
     try:
-        import sys; sys.path.insert(0, 'F:/working-project/tdx-mcp')
         from indicator_engine import load_kline, calc_all_indicators, get_summary, score_stock
         df = load_kline(_clean(symbol), count=count)
         df = calc_all_indicators(df)
@@ -152,7 +166,6 @@ def _tdx_indicator(symbol: str, count: int = 120) -> dict:
 def _tdx_chart(symbol: str, count: int = 120) -> dict:
     """渲染图表"""
     try:
-        import sys; sys.path.insert(0, 'F:/working-project/tdx-mcp')
         from indicator_engine import load_kline
         from chart_renderer import render_chart
         df = load_kline(_clean(symbol), count=count)
@@ -164,7 +177,6 @@ def _tdx_chart(symbol: str, count: int = 120) -> dict:
 def _tdx_decision() -> dict:
     """完整决策周期"""
     try:
-        import sys; sys.path.insert(0, 'F:/working-project/tdx-mcp')
         from decision_engine import full_decision_cycle
         result = full_decision_cycle()
         return {
@@ -180,7 +192,6 @@ def _tdx_decision() -> dict:
 def _tdx_sector_scan(symbols: list[str], sector_name: str = "板块") -> dict:
     """批量扫描+评分"""
     try:
-        import sys; sys.path.insert(0, 'F:/working-project/tdx-mcp')
         from indicator_engine import load_kline, calc_all_indicators, get_summary, score_stock
         results = []
         for sym in symbols:
@@ -193,11 +204,10 @@ def _tdx_sector_scan(symbols: list[str], sector_name: str = "板块") -> dict:
             except Exception as e:
                 results.append({"symbol": sym, "error": str(e)})
         results.sort(key=lambda r: r.get("score", -99), reverse=True)
-        # Render grid chart
         try:
             from chart_renderer import render_sector_grid
             grid_path = render_sector_grid(symbols, sector_name)
-        except:
+        except Exception:
             grid_path = None
         return {"sector": sector_name, "rankings": results, "grid_chart": grid_path}
     except Exception as e:
@@ -222,15 +232,12 @@ def handle_request(req: dict) -> dict | None:
     method = req.get("method", "")
     rid = req.get("id")
 
-    # initialize
     if method == "initialize":
         return {"jsonrpc": "2.0", "id": rid, "result": {"protocolVersion": "2024-11-05", "capabilities": {"tools": {}}, "serverInfo": {"name": "tdx-mcp", "version": "1.0.0"}}}
 
-    # tools/list
     if method == "tools/list":
         return {"jsonrpc": "2.0", "id": rid, "result": {"tools": TOOLS}}
 
-    # tools/call
     if method == "tools/call":
         name = req.get("params", {}).get("name", "")
         args = req.get("params", {}).get("arguments", {})
@@ -255,7 +262,6 @@ def handle_request(req: dict) -> dict | None:
             result = {"error": f"Unknown tool: {name}"}
         return {"jsonrpc": "2.0", "id": rid, "result": {"content": [{"type": "text", "text": json.dumps(result, ensure_ascii=False)}]}}
 
-    # notifications
     if method == "notifications/initialized" or method == "initialized":
         return None
 
@@ -264,7 +270,6 @@ def handle_request(req: dict) -> dict | None:
 async def main():
     reader = asyncio.StreamReader()
     loop = asyncio.get_event_loop()
-    # Use stdin as a raw stream
     transport, _ = await loop.connect_read_pipe(lambda: asyncio.StreamReaderProtocol(reader), sys.stdin)
     writer_transport, writer = await loop.connect_write_pipe(lambda: asyncio.StreamWriter, sys.stdout)
 

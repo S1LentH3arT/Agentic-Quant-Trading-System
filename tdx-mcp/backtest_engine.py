@@ -7,7 +7,7 @@
 """
 
 import sys, os, json, math
-sys.path.insert(0, 'F:/working-project/tdx-mcp')
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import numpy as np
 import pandas as pd
 from datetime import datetime, date, timedelta

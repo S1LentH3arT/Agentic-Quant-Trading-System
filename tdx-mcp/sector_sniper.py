@@ -5,7 +5,8 @@
 """
 
 import sys, json, os
-sys.path.insert(0, 'F:/working-project/tdx-mcp')
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from config import get_path, ensure_dir
 from mootdx.quotes import StdQuotes
 from indicator_engine import load_kline, calc_all_indicators, get_summary, score_stock
 from datetime import datetime, date
@@ -182,8 +183,7 @@ def snipe():
 
     # 保存
     today = date.today().isoformat()
-    save_dir = "F:/working-project/tdx-mcp/discoveries"
-    os.makedirs(save_dir, exist_ok=True)
+    save_dir = ensure_dir("tdx-mcp", "discoveries")
     with open(f"{save_dir}/sniper_{today}.json", "w", encoding="utf-8") as f:
         json.dump({"date": today, "hot_sectors": hot_names, "discoveries": discoveries, "new_candidates": all_new[:30]}, f, ensure_ascii=False, indent=2)
 

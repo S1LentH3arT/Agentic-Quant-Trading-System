@@ -16,15 +16,17 @@ def _try_tdx_kline(symbol: str, count: int = 60):
     try:
         from mootdx.quotes import StdQuotes
         client = StdQuotes(host='218.6.170.47', port=7709, timeout=5)
-        # 判断市场
-        market = 1 if symbol.startswith('6') else 0
-        df = client.kline(symbol=symbol, market=market, count=count)
+        # bars() 是 StdQuotes 的正确方法; frequency=9 为日线
+        df = client.bars(symbol=symbol, frequency=9, offset=count)
         if df is not None and len(df) > 0:
-            df = df.rename(columns={
-                'open': 'open', 'high': 'high', 'low': 'low',
-                'close': 'close', 'volume': 'volume'
-            })
-            # 确保列存在
+            # bars() 返回的列名可能是 date/open/high/low/close/volume
+            rename_map = {}
+            for col in df.columns:
+                col_lower = col.lower()
+                if col_lower in ('open', 'high', 'low', 'close', 'volume'):
+                    rename_map[col] = col_lower
+            if rename_map:
+                df = df.rename(columns=rename_map)
             for col in ['open', 'high', 'low', 'close', 'volume']:
                 if col not in df.columns:
                     return None

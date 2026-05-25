@@ -6,7 +6,8 @@
 """
 
 import sys, json, os, time
-sys.path.insert(0, 'F:/working-project/tdx-mcp')
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from config import get_path, ensure_dir
 sys.stdout.reconfigure(encoding='utf-8')
 from mootdx.quotes import StdQuotes
 from indicator_engine import load_kline, calc_all_indicators, get_summary, score_stock
@@ -18,14 +19,13 @@ from datetime import datetime, date, timedelta
 POSITIONS = {}
 CASH = 7895.73
 TOTAL_CAPITAL = 7895.73
-IDLE_SINCE = "2026-05-22"  # 现金开始闲置的日期
-STATE_FILE = "F:/working-project/tdx-mcp/state/rolling_state.json"
+IDLE_SINCE = "2026-05-22"
+STATE_FILE = get_path("tdx-mcp", "state", "rolling_state.json")
 
 # 极端场景检测
 def detect_extreme() -> dict:
     """检查是否触发停机条件"""
     client = StdQuotes(host='218.6.170.47', port=7709, timeout=5)
-    # 检查上证指数
     try:
         data = client.quotes(symbol=['000001'])
         if hasattr(data, 'iterrows'):
@@ -36,9 +36,8 @@ def detect_extreme() -> dict:
     except:
         pass
 
-    # 检查月回撤(从扫描记录中)
     try:
-        scan_dir = "F:/working-project/tdx-mcp/scans"
+        scan_dir = get_path("tdx-mcp", "scans")
         if os.path.exists(scan_dir):
             files = sorted([f for f in os.listdir(scan_dir) if f.endswith('.json') and not f.startswith('week')])
             if files:
@@ -91,37 +90,30 @@ def capital_status() -> dict:
 def get_full_pool() -> list[str]:
     """获取完整候选池 = 22只主力 + 发现池 + 今日狙击发现"""
     pool = []
-    # 主力池
     main_pool = ["600863","601991","000070","600089","600406","601179","600312","000400","600875","300827","600379","600900","600011","300903","600183","002463","601698","603881","300608","688500","002272","002892","002421"]
     pool.extend(main_pool)
-    # 发现池
     for fname in ["discovery_pool.json", f"sniper_{date.today().isoformat()}.json"]:
-        fpath = f"F:/working-project/tdx-mcp/discoveries/{fname}"
+        fpath = get_path("tdx-mcp", "discoveries", fname)
         if os.path.exists(fpath):
             with open(fpath, encoding='utf-8') as f:
                 data = json.load(f)
             if isinstance(data, dict):
                 for key in data:
-                    # key itself is the symbol (e.g. "000099")
                     if isinstance(key, str) and key.isdigit() and len(key) == 6:
                         pool.append(key)
-                    # nested: key has symbol field
                     if isinstance(data[key], dict):
                         if 'symbol' in data[key]:
                             pool.append(data[key]['symbol'])
-                        # also check nested candidates list
                         for subkey in data[key]:
                             if isinstance(data[key][subkey], list):
                                 for item in data[key][subkey]:
                                     if isinstance(item, dict) and 'symbol' in item:
                                         pool.append(item['symbol'])
-    return list(dict.fromkeys(pool))  # 去重保序
+    return list(dict.fromkeys(pool))
 
 def rank_candidates() -> list[dict]:
     """从完整候选池中排名所有候选"""
     pool_symbols = get_full_pool()
-
-    client = StdQuotes(host='218.6.170.47', port=7709, timeout=5)
     results = []
     for sym in pool_symbols:
         try:
@@ -136,7 +128,6 @@ def rank_candidates() -> list[dict]:
     results.sort(key=lambda x: x['score'], reverse=True)
     return results
 
-# 部署建议
 def deploy_recommendation(candidates: list[dict], available_cash: float) -> dict:
     """给定候选池和可用资金, 输出部署方案"""
     if not candidates:
@@ -146,7 +137,6 @@ def deploy_recommendation(candidates: list[dict], available_cash: float) -> dict
     price = top['close']
     max_lots = int(available_cash / (price * 100))
     if max_lots == 0 and available_cash >= 1000:
-        # 不够买1手但有钱, 找更便宜的
         for c in candidates:
             if c['close'] * 100 <= available_cash:
                 top = c
@@ -169,20 +159,17 @@ def deploy_recommendation(candidates: list[dict], available_cash: float) -> dict
         "reason": f"评分{top['score']}/A1X={top['A1X']}/箱体{top['box_pos']}%"
     }
 
-# 主检查
 def check():
     print("=" * 60)
     print("  资金滚动引擎")
     print(f"  {datetime.now().strftime('%Y-%m-%d %H:%M')}")
     print("=" * 60)
 
-    # 极端场景
     extreme = detect_extreme()
     if extreme['extreme']:
         print(f"\n  STOP: {extreme['reason']} → {extreme['action']}")
         return {"status": "STOPPED", "reason": extreme['reason']}
 
-    # 资金状态
     cap = capital_status()
     print(f"\n  总资产: {cap['total_capital']:.0f} | 持仓: {cap['deployed']:.0f} | 现金: {cap['cash']:.0f} | 可释放: {cap['sellable_cash']:.0f}")
     print(f"  有效现金: {cap['effective_cash']:.0f} | 闲置: {cap['days_idle']}天")
@@ -190,7 +177,6 @@ def check():
     if cap['forced_rotation']:
         print(f"\n  !!! 强迫轮动: 现金>{cap['effective_cash']:.0f}闲置>{cap['days_idle']}天")
 
-    # 候选排名
     print("\n  扫描候选...")
     candidates = rank_candidates()
     print(f"  评分>=5的候选: {len(candidates)} 只")
@@ -199,7 +185,6 @@ def check():
             tag = "DZT!" if c['DZT'] else ""
             print(f"  {i+1}. {c['symbol']} score={c['score']} A1X={c['A1X']}({c['a1x_dir']}) box={c['box_pos']}% {tag}")
 
-    # 部署建议
     effective_cash = cap['effective_cash']
     if effective_cash >= 1000:
         deploy = deploy_recommendation(candidates, effective_cash)
@@ -212,7 +197,6 @@ def check():
     elif cap['forced_rotation']:
         print(f"\n  !!! 强迫轮动激活 — 必须24h内部署有效现金{effective_cash:.0f}")
 
-    # 保存状态
     os.makedirs(os.path.dirname(STATE_FILE), exist_ok=True)
     state = {"timestamp": str(datetime.now()), "capital": cap, "extreme": extreme, "candidates_top5": [c['symbol'] for c in candidates[:5]], "deploy": deploy_recommendation(candidates, effective_cash) if effective_cash >= 1000 else None}
     with open(STATE_FILE, "w", encoding="utf-8") as f:
