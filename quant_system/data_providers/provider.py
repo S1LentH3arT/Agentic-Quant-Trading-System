@@ -1,7 +1,7 @@
-import yfinance as yf
 import baostock as bs
 import pandas as pd
-from datetime import datetime, timedelta
+import yfinance as yf
+
 
 class DataProvider:
     def __init__(self):

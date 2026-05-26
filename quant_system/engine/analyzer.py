@@ -1,6 +1,5 @@
 import talib
-import pandas as pd
-import numpy as np
+
 
 class QuantAnalyzer:
     def __init__(self):

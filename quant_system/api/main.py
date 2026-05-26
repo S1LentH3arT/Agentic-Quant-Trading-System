@@ -1,15 +1,14 @@
-from fastapi import FastAPI, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
-from pydantic import BaseModel
-import uvicorn
+import logging
 import os
 import sys
 import time
-import random
-import logging
-import pandas as pd
+
 import numpy as np
+import pandas as pd
+import uvicorn
+from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 
 # 配置日志
 logging.basicConfig(level=logging.INFO)

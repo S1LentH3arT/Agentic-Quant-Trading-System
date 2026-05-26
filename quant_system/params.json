@@ -1,0 +1,579 @@
+{
+  "_meta": {
+    "version": 1,
+    "description": "量化系统可调参数注册表 — meta-evolution 扫描并提案修改这些参数",
+    "last_modified": "2026-05-25"
+  },
+  "indicator_engine": {
+    "box_period": {
+      "value": 13,
+      "range": [
+        8,
+        20
+      ],
+      "desc": "箱体布林带周期"
+    },
+    "vol_mult1": {
+      "value": 1.5,
+      "range": [
+        1.2,
+        2.0
+      ],
+      "desc": "放量起始倍率"
+    },
+    "vol_mult2": {
+      "value": 2.0,
+      "range": [
+        1.5,
+        3.0
+      ],
+      "desc": "强趋势放量确认倍率"
+    },
+    "angle_strong": {
+      "value": 15,
+      "range": [
+        10,
+        25
+      ],
+      "desc": "强趋势均线角度阈值(度)"
+    },
+    "angle_weak": {
+      "value": 10,
+      "range": [
+        5,
+        15
+      ],
+      "desc": "弱趋势均线角度阈值(度)"
+    },
+    "stop_loss_pct": {
+      "value": 5,
+      "range": [
+        3,
+        8
+      ],
+      "desc": "入场后止损幅度%"
+    },
+    "high_rise_warn": {
+      "value": 30,
+      "range": [
+        20,
+        50
+      ],
+      "desc": "30日涨幅高位预警%"
+    },
+    "a1x_a_low": {
+      "value": -3,
+      "range": [
+        -5,
+        0
+      ],
+      "desc": "A1X A级买入下限"
+    },
+    "a1x_a_high": {
+      "value": 2,
+      "range": [
+        0,
+        5
+      ],
+      "desc": "A1X A级买入上限"
+    },
+    "a1x_a_score": {
+      "value": 3,
+      "range": [
+        1,
+        5
+      ],
+      "desc": "A级A1X加分"
+    },
+    "a1x_b_deep_low": {
+      "value": -5,
+      "range": [
+        -8,
+        -2
+      ],
+      "desc": "A1X B级深水反弹下限"
+    },
+    "a1x_b_deep_high": {
+      "value": -1,
+      "range": [
+        -3,
+        0
+      ],
+      "desc": "A1X B级深水反弹上限"
+    },
+    "a1x_b_score": {
+      "value": 2,
+      "range": [
+        1,
+        4
+      ],
+      "desc": "B级A1X加分"
+    },
+    "a1x_c_threshold": {
+      "value": 2,
+      "range": [
+        1,
+        4
+      ],
+      "desc": "A1X C级追涨下限"
+    },
+    "box_a_low": {
+      "value": 0,
+      "range": [
+        0,
+        10
+      ],
+      "desc": "箱体A级低位%"
+    },
+    "box_a_high": {
+      "value": 15,
+      "range": [
+        10,
+        25
+      ],
+      "desc": "箱体A级高位%"
+    },
+    "box_a_score": {
+      "value": 3,
+      "range": [
+        1,
+        5
+      ],
+      "desc": "A级箱体加分"
+    },
+    "box_b_low": {
+      "value": 15,
+      "range": [
+        10,
+        30
+      ],
+      "desc": "箱体B级可接受下限%"
+    },
+    "box_b_high": {
+      "value": 35,
+      "range": [
+        25,
+        45
+      ],
+      "desc": "箱体B级可接受上限%"
+    },
+    "box_b_score": {
+      "value": 2,
+      "range": [
+        1,
+        4
+      ],
+      "desc": "B级箱体加分"
+    },
+    "box_c_high": {
+      "value": 60,
+      "range": [
+        40,
+        75
+      ],
+      "desc": "箱体C级偏高上限%"
+    },
+    "vol_a_low": {
+      "value": 1.5,
+      "range": [
+        1.2,
+        2.0
+      ],
+      "desc": "放量A级下限"
+    },
+    "vol_a_high": {
+      "value": 2.5,
+      "range": [
+        2.0,
+        4.0
+      ],
+      "desc": "放量A级上限"
+    },
+    "vol_a_score": {
+      "value": 3,
+      "range": [
+        1,
+        5
+      ],
+      "desc": "A级量能加分"
+    },
+    "vol_b_low": {
+      "value": 1.0,
+      "range": [
+        0.8,
+        1.5
+      ],
+      "desc": "温和放量下限"
+    },
+    "vol_b_score": {
+      "value": 2,
+      "range": [
+        1,
+        4
+      ],
+      "desc": "B级量能加分"
+    },
+    "qualify_min_score": {
+      "value": 5,
+      "range": [
+        3,
+        8
+      ],
+      "desc": "合格候选最低评分"
+    },
+    "dkx_veto_lookback": {
+      "value": 5,
+      "range": [
+        3,
+        8
+      ],
+      "desc": "DKX否决回溯K线数"
+    },
+    "dkx_veto_min_points": {
+      "value": 4,
+      "range": [
+        3,
+        5
+      ],
+      "desc": "DKX否决最少空头点数"
+    },
+    "a1x_trend_lookback": {
+      "value": 3,
+      "range": [
+        2,
+        5
+      ],
+      "desc": "A1X趋势判定回溯日数"
+    },
+    "intraday_pump_pct": {
+      "value": 2,
+      "range": [
+        1,
+        4
+      ],
+      "desc": "日内拉高判定幅度%"
+    },
+    "pump_vol_ratio": {
+      "value": 1.2,
+      "range": [
+        1.0,
+        2.0
+      ],
+      "desc": "拉高形态量比阈值"
+    },
+    "pump_penalty": {
+      "value": -2,
+      "range": [
+        -4,
+        -1
+      ],
+      "desc": "量价背离扣分"
+    }
+  },
+  "orchestrator": {
+    "kelly_base": {
+      "value": 0.1,
+      "range": [
+        0.05,
+        0.15
+      ],
+      "desc": "Kelly基础仓位比例"
+    },
+    "kelly_per_score": {
+      "value": 0.05,
+      "range": [
+        0.02,
+        0.08
+      ],
+      "desc": "评分每高1分增加仓位"
+    },
+    "kelly_cap": {
+      "value": 0.25,
+      "range": [
+        0.15,
+        0.35
+      ],
+      "desc": "Kelly仓位上限"
+    },
+    "max_lots": {
+      "value": 4,
+      "range": [
+        2,
+        8
+      ],
+      "desc": "单票最大手数"
+    },
+    "min_lots": {
+      "value": 1,
+      "range": [
+        1,
+        2
+      ],
+      "desc": "单票最小手数"
+    },
+    "min_score_deploy": {
+      "value": 6,
+      "range": [
+        4,
+        8
+      ],
+      "desc": "可部署最低评分"
+    },
+    "market_bull": {
+      "value": 1.0,
+      "range": [
+        0.5,
+        2.0
+      ],
+      "desc": "市场强势判定(上证涨>%)"
+    },
+    "market_bear": {
+      "value": -1.0,
+      "range": [
+        -2.0,
+        -0.5
+      ],
+      "desc": "市场收缩判定(上证跌< %)"
+    },
+    "hot_rank_limit": {
+      "value": 30,
+      "range": [
+        15,
+        50
+      ],
+      "desc": "热榜获取数量"
+    },
+    "scan_pool_limit": {
+      "value": 30,
+      "range": [
+        20,
+        60
+      ],
+      "desc": "技术扫描最大标的数"
+    },
+    "discovery_scan_max": {
+      "value": 200,
+      "range": [
+        100,
+        500
+      ],
+      "desc": "发现引擎最大扫描数"
+    },
+    "klines_count": {
+      "value": 120,
+      "range": [
+        60,
+        250
+      ],
+      "desc": "技术分析K线加载数"
+    }
+  },
+  "rolling_capital": {
+    "extreme_index_drop": {
+      "value": -5,
+      "range": [
+        -10,
+        -3
+      ],
+      "desc": "上证暴跌停机阈值%"
+    },
+    "extreme_drawdown": {
+      "value": 15,
+      "range": [
+        10,
+        25
+      ],
+      "desc": "月度回撤停机阈值%"
+    },
+    "suspend_days": {
+      "value": 3,
+      "range": [
+        1,
+        5
+      ],
+      "desc": "极端场景暂停天数"
+    },
+    "idle_cash_warn": {
+      "value": 1000,
+      "range": [
+        500,
+        3000
+      ],
+      "desc": "闲置现金警告线"
+    },
+    "idle_days_warn": {
+      "value": 1,
+      "range": [
+        1,
+        3
+      ],
+      "desc": "闲置天数警告线"
+    },
+    "idle_cash_force": {
+      "value": 2000,
+      "range": [
+        1000,
+        5000
+      ],
+      "desc": "强制轮动现金线"
+    },
+    "idle_days_force": {
+      "value": 2,
+      "range": [
+        1,
+        4
+      ],
+      "desc": "强制轮动天数线"
+    },
+    "candidate_min_score": {
+      "value": 5,
+      "range": [
+        3,
+        7
+      ],
+      "desc": "轮动候选最低评分"
+    }
+  },
+  "discovery_engine": {
+    "price_min": {
+      "value": 3,
+      "range": [
+        2,
+        10
+      ],
+      "desc": "粗筛最低价(元)"
+    },
+    "price_max": {
+      "value": 80,
+      "range": [
+        50,
+        200
+      ],
+      "desc": "粗筛最高价(元)"
+    },
+    "a1x_min": {
+      "value": -3,
+      "range": [
+        -5,
+        -1
+      ],
+      "desc": "发现A1X下限"
+    },
+    "a1x_max": {
+      "value": 3,
+      "range": [
+        1,
+        5
+      ],
+      "desc": "发现A1X上限"
+    },
+    "box_pos_max": {
+      "value": 50,
+      "range": [
+        30,
+        70
+      ],
+      "desc": "发现最大箱体位%"
+    },
+    "vol_ratio_min": {
+      "value": 0.8,
+      "range": [
+        0.5,
+        1.2
+      ],
+      "desc": "发现最小量比"
+    },
+    "min_klines": {
+      "value": 40,
+      "range": [
+        20,
+        60
+      ],
+      "desc": "计算最少K线数"
+    },
+    "batch_size": {
+      "value": 100,
+      "range": [
+        50,
+        200
+      ],
+      "desc": "行情查询批量大小"
+    },
+    "save_top_n": {
+      "value": 20,
+      "range": [
+        10,
+        50
+      ],
+      "desc": "保存发现池数量"
+    }
+  },
+  "decision_engine": {
+    "sector_resonance_pct": {
+      "value": 0.4,
+      "range": [
+        0.3,
+        0.6
+      ],
+      "desc": "板块共振高分占比"
+    },
+    "sector_uptrend_pct": {
+      "value": 0.5,
+      "range": [
+        0.3,
+        0.6
+      ],
+      "desc": "板块共振A1X上升占比"
+    },
+    "sector_ebbing_pct": {
+      "value": 0.3,
+      "range": [
+        0.2,
+        0.4
+      ],
+      "desc": "板块退潮A1X上升占比"
+    },
+    "high_score_bar": {
+      "value": 7,
+      "range": [
+        6,
+        9
+      ],
+      "desc": "板块高分标的阈值"
+    },
+    "open_position_min": {
+      "value": 8,
+      "range": [
+        6,
+        9
+      ],
+      "desc": "开仓条件最低评分"
+    },
+    "metrics_min_trades": {
+      "value": 30,
+      "range": [
+        15,
+        50
+      ],
+      "desc": "统计显著最少交易数"
+    }
+  },
+  "heartbeat": {
+    "auto_stop_loss_pct": {
+      "value": -7,
+      "range": [
+        -10,
+        -5
+      ],
+      "desc": "无配置时自动止损%"
+    },
+    "max_fail_streak": {
+      "value": 3,
+      "range": [
+        2,
+        5
+      ],
+      "desc": "重连前最大连续失败次数"
+    }
+  }
+}
