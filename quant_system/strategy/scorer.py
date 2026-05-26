@@ -121,42 +121,167 @@ class Scorer:
                         agent_features: dict) -> float:
         """从DataFrame或Agent特征中提取因子值，归一化到 [0,1]"""
         col = fd.output_columns[0] if fd.output_columns else ""
+        raw = 0.0
 
+        # 先从 DataFrame 取值
         if col in df.columns:
             raw = float(df[col].iloc[-1]) if len(df) > 0 else 0.0
 
-            # L6 因子归一化
-            if fd.layer == 6:
-                if col == "A1X":
-                    return min(1.0, max(0.0, (raw + 5) / 10))
-                if col == "box_position":
-                    return min(1.0, max(0.0, (70 - raw) / 70))
-                if col == "vol_ratio":
-                    return min(1.0, max(0.0, (raw - 0.5) / 2.0))
-                if col == "DKX" and "SMX" in df.columns:
-                    smx = float(df['SMX'].iloc[-1])
-                    return 1.0 if raw > smx else 0.3
-                if col in ("DZT", "ZT", "FANGLIANG2", "STRONG"):
-                    return float(raw > 0)
-                if col in ("daily_trend", "above_ma60", "above_ma120", "ma_aligned"):
-                    return float(raw > 0)
-                return min(1.0, max(0.0, raw)) if pd.notna(raw) else 0.0
+        # 再从 Agent 特征覆盖
+        if agent_features:
+            layer_keys = {1: "L1_industry", 2: "L2_capital",
+                          3: "L3_fundamentals", 4: "L4_chip"}
+            lk = layer_keys.get(fd.layer)
+            if lk:
+                for item in agent_features.get(lk, []):
+                    if item.get("symbol") == symbol or item.get("sector"):
+                        if col in item:
+                            raw = float(item[col]) if item[col] is not None else raw
 
-            return min(1.0, max(0.0, raw)) if pd.notna(raw) else 0.0
-
-        # Agent 特征取值
-        if agent_features and fd.layer in (1, 2, 3, 4):
-            layer_key = f"L{fd.layer}_industry" if fd.layer == 1 else \
-                        f"L{fd.layer}_capital" if fd.layer == 2 else \
-                        f"L{fd.layer}_fundamentals" if fd.layer == 3 else \
-                        f"L{fd.layer}_chip"
-            items = agent_features.get(layer_key, [])
-            for item in items:
-                if item.get("symbol") == symbol or item.get("sector"):
-                    return float(item.get(col, 0) or 0)
+        if not pd.notna(raw):
             return 0.0
 
-        return 0.0
+        # ── 逐层归一化 ──
+
+        # L1: 产业 (0~1)
+        if fd.layer == 1:
+            if col == "sector_momentum":
+                return min(1.0, max(0.0, raw))
+            if col == "prosperity_score":
+                return min(1.0, max(0.0, raw))
+            if col == "volume_trend":
+                return min(1.0, max(0.0, (raw + 0.5) / 1.5))
+            if col == "policy_support":
+                return min(1.0, max(0.0, (raw + 1) / 2))  # -1→0, +1→1
+            if col == "research_catalyst":
+                return min(1.0, max(0.0, raw))
+            if col == "avoid_sector":
+                return 0.0 if raw > 0 else 1.0
+
+        # L2: 资金 (0~1)
+        if fd.layer == 2:
+            if col == "capital_phase":
+                return min(1.0, max(0.0, (raw + 1) / 2))  # -1→0, 1→1
+            if col == "vol_health":
+                return min(1.0, max(0.0, raw / 3.0))  # >3=health
+            if col in ("accumulation", "push_up"):
+                return min(1.0, max(0.0, raw))
+            if col == "distribution":
+                return 1.0 - min(1.0, max(0.0, raw))
+            if col == "north_direction":
+                return min(1.0, max(0.0, (raw + 1) / 2))
+            if col == "north_duration":
+                return min(1.0, raw / 30.0)
+            if col == "institution_phase":
+                return min(1.0, max(0.0, (raw + 1) / 3))
+            if col == "institution_ratio":
+                return min(1.0, max(0.0, raw))
+
+        # L3: 财报 (0~1)
+        if fd.layer == 3:
+            if col == "pe_percentile":
+                return min(1.0, max(0.0, (30 - raw) / 30))  # 越低越好
+            if col == "pb_percentile":
+                return min(1.0, max(0.0, (30 - raw) / 30))
+            if col == "undervalue_signal":
+                return float(raw > 0)
+            if col == "deducted_np_growth":
+                return min(1.0, max(0.0, (raw + 30) / 60))
+            if col == "revenue_growth":
+                return min(1.0, max(0.0, (raw + 20) / 40))
+            if col == "gross_margin":
+                return min(1.0, max(0.0, raw / 60))
+            if col == "margin_trend":
+                return min(1.0, max(0.0, (raw + 1) / 2))
+            if col in ("op_cf_positive", "cf_match_profit"):
+                return float(raw > 0)
+            if col in ("goodwill_ratio", "pledge_ratio", "debt_risk"):
+                return 1.0 - min(1.0, raw)  # 越低越好
+
+        # L4: 筹码 (0~1)
+        if fd.layer == 4:
+            if col == "cap_fit_score":
+                return min(1.0, max(0.0, raw))
+            if col == "holder_decline_q":
+                return min(1.0, raw / 4.0)  # 连续4季满分
+            if col == "holder_concentration":
+                return min(1.0, max(0.0, raw))
+            if col == "inst_holder_ratio":
+                return min(1.0, max(0.0, raw))
+            if col == "inst_quality":
+                return min(1.0, max(0.0, raw))
+            if col == "near_lockup":
+                return 0.0 if raw > 0 else 1.0
+            if col in ("lockup_ratio", "insider_reduction"):
+                return 1.0 - min(1.0, raw)
+
+        # L5: 流动性 (0~1)
+        if fd.layer == 5:
+            if col == "amount_stability":
+                return min(1.0, max(0.0, 1.0 - abs(raw - 1.0)))
+            if col == "amount_shrink":
+                return 1.0 - min(1.0, raw)
+            if col in ("turnover_healthy", "independent_score"):
+                return float(raw > 0)
+            if col == "turnover_extreme":
+                return 1.0 - float(raw > 0)
+            if col == "buy_pressure":
+                return min(1.0, max(0.0, raw))
+            if col in ("sell_exhaustion", "supply_demand_inflection"):
+                return float(raw > 0)
+            if col == "up_streak_5d":
+                return min(1.0, max(0.0, raw / 5.0))
+            if col == "max_dd_20d":
+                return min(1.0, max(0.0, 1.0 + raw / 30))  # -30%=0, 0%=1
+
+        # L6: 技术 (0~1) — keep existing logic
+        if fd.layer == 6:
+            if col == "A1X":
+                return min(1.0, max(0.0, (raw + 5) / 10))
+            if col == "box_position":
+                return min(1.0, max(0.0, (70 - raw) / 70))
+            if col == "vol_ratio":
+                return min(1.0, max(0.0, (raw - 0.5) / 2.0))
+            if col == "DKX" and "SMX" in df.columns:
+                smx = float(df['SMX'].iloc[-1])
+                return 1.0 if raw > smx else 0.3
+            if col in ("DZT", "ZT", "FANGLIANG2", "STRONG", "box_breakout"):
+                return float(raw > 0)
+            if col in ("daily_trend", "above_ma60", "above_ma120", "ma_aligned",
+                       "dkx_up", "WEAK"):
+                return float(raw > 0)
+            if col == "FAKE":
+                return 1.0 - float(raw > 0)  # FAKE=坏信号
+            if col == "stop_line":
+                return 0.5
+            if col == "SMX":
+                return 0.5
+            if "MA" in col and "ANGLE" in col:
+                return min(1.0, max(0.0, (raw + 45) / 90))
+            if col == "ZF":
+                return min(1.0, max(0.0, (raw + 10) / 20))
+            if col == "RISE30":
+                return min(1.0, max(0.0, 1.0 - raw / 50))
+            if col == "ZZJC":
+                return 1.0 - float(raw > 0)  # ZZJC=坏信号
+            if "MA" in col and "ANGLE" not in col:
+                return 0.5
+
+        # L7: 风控排雷 (0~1, 反向: 风险越高分越低)
+        if fd.layer == 7:
+            if col in ("board_exclude", "is_st", "loss_warning", "deducted_negative"):
+                return 1.0 - float(raw > 0)
+            if col == "bubble_risk":
+                return 1.0 - min(1.0, raw)
+            if col == "rise_60d_pct":
+                return min(1.0, max(0.0, (100 - raw) / 100))
+            if col == "bubble_30d":
+                return 1.0 - float(raw > 0)
+            if col in ("insider_sell_flag", "pledge_risk", "goodwill_risk",
+                       "chaos_flag", "fraud_risk"):
+                return 1.0 - float(raw > 0)
+
+        return min(1.0, max(0.0, raw)) if pd.notna(raw) else 0.0
 
 
 def get_summary(df: pd.DataFrame, symbol: str = "") -> dict:
