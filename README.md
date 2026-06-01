@@ -1,4 +1,4 @@
-# 🏦 Agentic Quant Trading System v3
+# 🏦 OpenQuant v3
 
 > **LLM-enhanced quantitative trading system for A-share market.**
 > 8-layer stock selection · 33 factors · AI agent enrichment · full backtest · risk management
@@ -104,8 +104,8 @@ streamlit       # Dashboard (quant_desk.py)
 ### Step 1: Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/Agentic-Quant-Trading-System.git
-cd Agentic-Quant-Trading-System
+git clone https://github.com/your-username/OpenQuant.git
+cd OpenQuant
 ```
 
 ### Step 2: Create Virtual Environment
@@ -254,7 +254,7 @@ Every live trade requires **Windows MessageBox confirmation** — no silent exec
 ## 📁 Project Structure
 
 ```
-Agentic-Quant-Trading-System/
+OpenQuant/
 ├── quant_system/               # 🏗️ Core system (new architecture)
 │   ├── __main__.py             #   CLI entry point
 │   ├── config.py               #   Path & config management

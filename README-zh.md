@@ -1,4 +1,4 @@
-# 🏦 智能量化交易系统 v3
+# 🏦 OpenQuant v3
 
 > **LLM 增强的 A 股量化交易系统。**
 > 8 层选股 · 33 因子 · AI 智能体增强 · 完整回测 · 风控体系
@@ -103,8 +103,8 @@ streamlit       # 仪表盘 (quant_desk.py)
 ### 第一步：克隆仓库
 
 ```bash
-git clone https://github.com/your-username/Agentic-Quant-Trading-System.git
-cd Agentic-Quant-Trading-System
+git clone https://github.com/your-username/OpenQuant.git
+cd OpenQuant
 ```
 
 ### 第二步：创建虚拟环境
@@ -273,7 +273,7 @@ python -m quant_system status
 ## 📁 项目结构
 
 ```
-Agentic-Quant-Trading-System/
+OpenQuant/
 ├── quant_system/               # 🏗️ 核心系统（新架构）
 │   ├── __main__.py             #   CLI 主入口
 │   ├── config.py               #   路径与配置管理
