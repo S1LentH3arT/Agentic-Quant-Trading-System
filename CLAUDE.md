@@ -171,7 +171,7 @@ Rule 2.1 触发 → 撤限价单 → 改市价 → 立即离场。离场速度 >
 | 心跳系统 | 盘中 10 次警报价位+盘口+量能 |
 | 7维度指标 | 胜率/赔率/Kelly/Sharpe 每日更新 |
 | 实盘交易 | easytrader → 同花顺 → 中金财富 |
-| Cron 任务 | 8:57 早报 / 9:32 Pipeline / 14:55 尾盘 / 周五复盘 |
+| Scheduler | `python tdx-mcp/scheduler.py` — 全自动调度 (早报/Pipeline/尾盘/复盘/心跳自启停) |
 
 ## 数据架构
 

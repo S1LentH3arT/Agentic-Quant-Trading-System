@@ -575,23 +575,5 @@
       ],
       "desc": "重连前最大连续失败次数"
     }
-  },
-  "agent": {
-    "_desc": "QuantResearchAgent 增强评分控制",
-    "enabled": {
-      "value": false,
-      "range": [false, true],
-      "desc": "启用Agent增强评分 (--agent CLI标志强制覆盖)"
-    },
-    "timeout_seconds": {
-      "value": 60,
-      "range": [30, 120],
-      "desc": "Agent API 超时(秒)"
-    },
-    "max_stocks": {
-      "value": 20,
-      "range": [10, 50],
-      "desc": "送入Agent的最大股票数"
-    }
   }
 }

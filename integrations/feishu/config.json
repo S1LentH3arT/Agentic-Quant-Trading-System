@@ -1,8 +1,0 @@
-{
-  "app_id": "clicli_a970bf07d178dbc4",
-  "app_secret": "QpEQEUKROhoe1CtF7G9WWbunJkdFaxjP",
-  "api_base": "https://open.feishu.cn/open-apis",
-  "hermes_endpoint": "TBD",
-  "target_chat_id": "oc_2093bac919e294d863d0ef6f506d3702",
-  "env": "production"
-}

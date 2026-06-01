@@ -59,7 +59,7 @@ def print_config():
     print(f"SYSTEM_ROOT  = {SYSTEM_ROOT}")
     print(f"Python = {sys.executable}")
     for k, v in DIRS.items():
-        exists = "✓" if os.path.exists(v) else "✗"
+        exists = "[OK]" if os.path.exists(v) else "[MISSING]"
         print(f"  {k:20s} {exists} {v}")
 
 

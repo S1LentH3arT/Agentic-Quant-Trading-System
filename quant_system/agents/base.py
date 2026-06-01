@@ -4,6 +4,7 @@ Agent 基类 — LLM调用 + 结构化JSON解析 + Schema校验
 """
 
 import json
+import os
 import re
 from typing import Optional
 
@@ -15,9 +16,11 @@ class ResearchAgent:
     system_prompt: str = ""
     output_schema: dict = {}
 
-    def __init__(self, api_key: str = None, base_url: str = None):
-        self.api_key = api_key
+    def __init__(self, api_key: str = None, base_url: str = None,
+                 timeout: int = 120):
+        self.api_key = api_key or os.environ.get("DEEPSEEK_API_KEY", "")
         self.base_url = base_url or "https://api.deepseek.com/v1"
+        self.timeout = timeout
 
     def run(self, **context) -> dict:
         """主流程: LLM调用 → JSON解析 → Schema校验"""
@@ -46,9 +49,11 @@ class ResearchAgent:
                 "temperature": 0.3,
                 "max_tokens": 4096,
             },
-            timeout=60,
+            timeout=self.timeout,
         )
         data = resp.json()
+        if "choices" not in data:
+            raise RuntimeError(f"API error: {data.get('error', data)}")
         return data["choices"][0]["message"]["content"]
 
     def _parse_json(self, raw: str) -> dict:

@@ -1,7 +1,8 @@
-import requests
 import json
-import pandas as pd
 from datetime import datetime
+
+import requests
+
 
 def fetch_eastmoney_data(ticker):
     """

@@ -37,16 +37,11 @@ def ensure_dir(*parts: str) -> str:
 # ── 常用目录映射 ──
 DIRS = {
     "tdx_mcp":       get_path("tdx-mcp"),
-    "scans":         get_path("tdx-mcp", "scans"),
-    "charts":        get_path("tdx-mcp", "charts"),
-    "discoveries":   get_path("tdx-mcp", "discoveries"),
     "state":         get_path("tdx-mcp", "state"),
-    "alerts":        get_path("tdx-mcp", "alerts"),
-    "agents_output": get_path("agents", "output"),
-    "meta_storage":  get_path("meta-evolution", "storage"),
     "knowledge":     get_path("knowledge"),
     "rules":         get_path("knowledge", "rules"),
     "memory":        get_path("memory"),
+    "trade_db":      get_path("tdx-mcp", "state", "trades.db"),
 }
 
 
@@ -55,7 +50,7 @@ def print_config():
     print(f"PROJECT_ROOT = {PROJECT_ROOT}")
     print(f"Python = {sys.executable}")
     for k, v in DIRS.items():
-        exists = "✓" if os.path.exists(v) else "✗"
+        exists = "[OK]" if os.path.exists(v) else "[MISSING]"
         print(f"  {k:20s} {exists} {v}")
 
 
